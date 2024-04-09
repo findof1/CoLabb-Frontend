@@ -7,6 +7,7 @@ import { SignInContext } from "./SignInContext";
 import GET_USER from "@/app/functions/GraphQl/queries/GetUser";
 import setData from "@/app/functions/setData";
 import { useRouter } from "next/navigation";
+import Button from "../Button";
 
 
 const SignIn = () => {
@@ -44,12 +45,13 @@ const SignIn = () => {
       <EmailInput />
       <PasswordInput />
       <RememberMe />
-      <button
+      <Button
         onClick={SignInAndValidation}
-        className="w-[40vw] h-[8vh] mt-[3%] text-2xl rounded-lg bg-[#6f2ba0] border-2 border-[#983ba0]"
+        style = 'none' 
+        extraStyles="w-[40vw] h-[8vh] mt-[3%] text-2xl rounded-lg bg-[#6f2ba0] border-2 border-[#983ba0]"
       >
         Sign In
-      </button>
+      </Button>
     </>
   );
 };

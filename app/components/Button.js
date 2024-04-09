@@ -37,7 +37,7 @@ const Button = ({style = 'default', extraStyles = '', route = '', type = 'button
     style = '';
   }
   const router = useRouter()
-  let routed;
+  let routed= () => {};
   if(route.includes('/')){
     setTimeout(()=>{
       if(replace){
