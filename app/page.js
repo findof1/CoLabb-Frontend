@@ -1,4 +1,3 @@
-import SignIn from "./components/SignIn";
 import Image from "next/image";
 import { PiHandshakeFill } from "react-icons/pi";
 import { FaChartPie } from "react-icons/fa";
@@ -9,14 +8,12 @@ import { MdWorkspacePremium } from "react-icons/md";
 import { IoMdCheckmark } from "react-icons/io";
 import { LuArrowLeft } from "react-icons/lu";
 import Button from "./components/Button";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
     <>
-      <div className="w-[95vw] top-[2vh] left-[3vw] flex flex-row fixed z-10">
-        <p className="text-[24px] font-bold tracking-[-1px]">CoLabb</p>
-        <SignIn></SignIn>
-      </div>
+      <Navbar/>
       <div className="w-[99vw] h-screen bg-[#1F1223] absolute top-0 left-0">
         <div className="absolute sm:right-0 md:right-0 lg:right-0 w-full sm:w-[70%] md:w-[70%] lg:w-[70%] h-full overflow-hidden">
           <Image

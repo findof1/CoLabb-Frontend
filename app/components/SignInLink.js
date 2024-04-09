@@ -3,7 +3,7 @@ import React from "react";
 import getLocalData from "../functions/getLocalData";
 import Link from 'next/link'
 
-const SignIn = () => {
+const SignInLink = () => {
   const userData = getLocalData();
   return (
     <div className="ml-auto mr-5 mt-1">
@@ -26,4 +26,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInLink;
