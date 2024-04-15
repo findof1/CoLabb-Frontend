@@ -1,5 +1,5 @@
 "use client"
-import SignInLink from "./SignInLink";
+import SignInLink from "./SignInLink/SignInLink";
 import Link from 'next/link'
 
 const Navbar = () => {

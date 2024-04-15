@@ -3,21 +3,22 @@ import React, { useContext, useState } from "react";
 import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 import RememberMe from "./RememberMe";
-import { SignInContext } from "./SignInContext";
-import GET_USER from "@/app/functions/GraphQl/queries/GetUser";
+import { RegisterContext } from "./RegisterContext";
+import ADD_USER from "@/app/functions/GraphQl/mutations/AddUser";
 import setData from "@/app/functions/setData";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Button from "../Button";
 import Link from "next/link";
 
 
-const SignIn = () => {
+const Register = () => {
   const { email, password, rememberMe, setEmail, setPassword, setRememberMe } =
-    useContext(SignInContext);
+    useContext(RegisterContext);
   const router = useRouter()
+  const search = useSearchParams()
   const [errMsg, setErrMsg] = useState("")
-
-  const SignInAndValidation = () => {
+  console.log()
+  const RegisterAndValidation = () => {
     if(!email || !password) {
       setErrMsg("Please fill out all fields.")
       return;
@@ -26,22 +27,29 @@ const SignIn = () => {
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: GET_USER(password, email) }),
+      body: JSON.stringify({ query: ADD_USER(password, email) }),
     }) 
       .then((res) => res.json())
       .then(async (data) => { 
         if(data.error){
-          console.error(data.error)
+          console.error(data.errors)
           return;
         }
-        const userData = data.data.getUser
+        const userData = data.data.addUser
         if(userData){
           await setData(userData,rememberMe).then(()=>{
-            router.push('/dashboard')
           })
-
+        if(search.get("type") == 'employee'){
+          router.push('/register/3')
         }else{
-          setErrMsg("Inncorrect Email or Password.")
+          if(search.get("plan")){
+            router.push(`/register/5?plan=${search.get("plan")}`)
+          }else{
+            router.push('/register/4')
+          }
+        }
+        }else{
+          setErrMsg("A User with that email already exists, try logging in.")
         }
       })
       .catch((err) => {
@@ -57,16 +65,16 @@ const SignIn = () => {
       <RememberMe />
       
       <Button
-        onClick={SignInAndValidation}
+        onClick={RegisterAndValidation}
         style = 'none' 
-        extraStyles={`w-[40vw] h-[8vh] mt-[2%] text-2xl rounded-lg bg-[#6f2ba0] border-2 border-[#983ba0]`}
+        extraStyles={`w-[40vw] h-[8vh] mt-[6%] text-2xl rounded-lg bg-[#6f2ba0] border-2 border-[#983ba0]`}
       >
-        Sign In
+        Register
       </Button>
       <p className="text-[rgb(200,0,0)] tezt-sm">{errMsg}</p>
-      <p className="text-[#C9C9C9] text-xs mt-5">Don't Have An Account? <Link href='/register/1' className="underline">Resgister</Link></p>
+      <p className='text-xs text-[#C9C9C9] mt-auto mb-3'>Already Have An Account? <Link href='/signIn' className='underline'>Sign In</Link></p>
     </>
   );
 };
 
-export default SignIn;
+export default Register;

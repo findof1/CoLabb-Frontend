@@ -11,6 +11,7 @@ import Button from "./components/Button";
 import Navbar from "./components/Navbar";
 
 export default function Home() {
+  
   return (
     <>
       <Navbar/>
@@ -38,7 +39,7 @@ export default function Home() {
         </p>
         <Button
           style="none"
-          route="/register"
+          route="/register/1"
           extraStyles="absolute left-[6vw] top-[62vh] w-[14vw] h-[7vh] bg-[#A257A8] text-xl font-bold rounded-[10px]"
         >
           Get Started
@@ -236,7 +237,7 @@ export default function Home() {
             </div>
             <Button
               style="none"
-              route="/register?plan=basic"
+              route="/register/2?plan=basic"
               extraStyles="bg-[#A257A8] mt-auto mb-[5%] w-[90%] rounded-md p-1"
             >
               Buy now
@@ -270,7 +271,7 @@ export default function Home() {
             </div>
             <Button
               style="none"
-              route="/register?plan=standard"
+              route="/register/2?plan=standard"
               extraStyles="bg-[#5B3766] mt-auto mb-[5%] w-[80%] rounded-md p-2"
             >
               Buy now
@@ -306,7 +307,7 @@ export default function Home() {
             </div>
             <Button
               style="none"
-              route="/register?plan=premuim"
+              route="/register/2?plan=premuim"
               extraStyles="bg-[#A257A8] mt-auto mb-[5%] w-[90%] rounded-md p-1"
             >
               Buy now
