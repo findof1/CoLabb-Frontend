@@ -1,30 +1,49 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PasswordInput from "./PasswordInput";
 import { RegisterCompanyContext } from "./RegisterCompanyContext";
-import ADD_USER from "@/app/functions/GraphQl/mutations/AddUser";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "../Button";
 import NameInput from "./NameInput";
+import ADD_COMPANY from "@/app/functions/GraphQl/mutations/AddCompany";
+import getLocalData from "@/app/functions/getLocalData";
 
 
 const RegisterCompany = () => {
   const { name, password } = useContext(RegisterCompanyContext)
-    useContext(RegisterCompanyContext);
+  const [userdata, setUserdata] = useState(undefined); 
   const router = useRouter()
   const search = useSearchParams()
   const [errMsg, setErrMsg] = useState("")
-  console.log()
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+       const data = await getLocalData();
+       setUserdata(data);
+    };
+    fetchData();
+   }, []);
+
+
   const RegisterCompanyAndValidation = () => {
     setErrMsg("")
     if(!name || ![password]){
       setErrMsg("Please fill out all fields")
       return;
     }
+    if(!userdata._id){
+      setErrMsg("Userdata is corrupted, please try and sign in again, or create a new account.")
+    }
+    if(!password.includes('!') && !password.includes('@') && !password.includes('#') && !password.includes('$') && !password.includes('%') && !password.includes('^') && !password.includes('&') && !password.includes('*') && !password.includes('(') && !password.includes(')') && !password.includes('-') && !password.includes('_') && !password.includes('=') && !password.includes('+')){
+      setErrMsg("Password doesn't include a special character.");
+      return;
+    }
+    if(search.get("plan") !== "basic" || search.get("plan") !== "standard" || search.get("plan") !== "premium")
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: ADD_USER() }),
+      body: JSON.stringify({ query: ADD_COMPANY(name, password, search.get("plan"), userdata._id) }),
     }) 
       .then((res) => res.json())
       .then(async (data) => { 
@@ -32,6 +51,7 @@ const RegisterCompany = () => {
           console.error(data.errors)
           return;
         }
+        router.push("/dashboard")
       })
       .catch((err) => {
         setErrMsg("An unknown error occured, please try again.")
